@@ -1,5 +1,4 @@
 <?php
-//commentaire ajouté pour faire un retour arrière git
 require './Controleur/actions.php';
 
 try {
