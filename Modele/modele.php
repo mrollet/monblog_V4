@@ -1,36 +1,33 @@
 <?php
+class Modele
+{
+private $monPdo=null;
 //effectue la connexion à la bdd
 //instancie et renvoie l'objet PDO associé
-function getBdd()
+private function getBdd()
 {
-     // Connexion à la base "monblog" locale, utilisation du compte root sans mot de passe
-    $bdd = new PDO('mysql:host=localhost;dbname=monblog;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
-    return $bdd;
+    if ($this->monPdo==null) { 
+        // Connexion à la base "monblog" locale, utilisation du compte root sans mot de passe
+        $this->monPdo = new PDO('mysql:host=localhost;dbname=monblog;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
+     
+    }
+    return $this->monPdo;
 }
 
-function getBillets()
+public function getBillets()
 {
-    $bdd = getBdd();
     $requeteBillets = "select * from T_BILLET order by BIL_ID desc";
-    $stmtBillets = $bdd->query($requeteBillets);
+    $stmtBillets = $this->getBdd()->query($requeteBillets);
     $billets = $stmtBillets->fetchAll();
     return $billets;
 }
 
-function getBillet($idBillet)
+public function getBillet($idBillet)
 {
-    $bdd = getBdd();
     $requeteBillet = "select * from T_BILLET where BIL_ID= $idBillet";
-    $stmtBillet = $bdd->query($requeteBillet);
+    $stmtBillet = $this->getBdd()->query($requeteBillet);
     $billet = $stmtBillet->fetch();  // Accès au premier élément résultat
     return $billet;
 }
 
-function getCommentaires($idBillet)
-{
-    $bdd = getBdd();
-    $requeteCommentaires = "select * from T_COMMENTAIRE where BIL_ID= $idBillet";
-    $stmtCommentaires = $bdd->query($requeteCommentaires);
-    $commentaires = $stmtCommentaires->fetchAll();
-    return $commentaires;
 }
